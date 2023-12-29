@@ -5,7 +5,6 @@ A Plagiograph (pla·gi·o·graph) is mechanism for tracing images and scaling th
 The Python code uses basic geometric formulas to map the positions of all the joints. The unique motion of each and every component is captured with precision. You can check out the test run below.
 
 ![test1](./test.gif)
-[Click here to view the PDF](Reportv3.pdf)
 
 Please install the following python libaries in you System
 1. Pandas
