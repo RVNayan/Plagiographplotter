@@ -18,5 +18,5 @@ Please install the following python libaries in you System
 **Note** installing all of the above packages is necessary for proper functioning of program. 
 This code is written in Jupyter Notebook. A .py version will be made available soon.
 
-Click Here to view the Term Paper on the Simulation [here][https://github.com/RVNayan/Plagiographplotter/Reportv3.pdf]
+Click Here to view the Term Paper on the Simulation [here](https://github.com/RVNayan/Plagiographplotter/blob/main/Reportv3.pdf)
 
