@@ -17,6 +17,9 @@ Please install the following python libaries in you System
 4. OpenCV
 5. os
 
+
+pip install opencv-python-headless (for python)
+
 **Note** installing all of the above packages is necessary for proper functioning of program. 
 This code is written in Jupyter Notebook. A .py version will be made available soon.
 
