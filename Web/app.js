@@ -53,7 +53,7 @@ function calculateAnglesAndVectors() {
     OC = OA.map((v, i) => [v[0] + AC[i][0], v[1] + AC[i][1]]);
     BC = OA.slice();
     OB = AC.slice();
-    BY = BC.map(v => rotation(v, alpha, 1 / (Math.sin(gamma) / Math.sin(beta))));
+    BY = OA.map(v => rotation(v, alpha, 1 / (Math.sin(gamma) / Math.sin(beta))));
 }
 
 // Update Button Functionality
