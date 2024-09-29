@@ -22,7 +22,7 @@ function setup() {
 function draw() {
     background(255);
     translate(width / 2, height / 2);
-    scale(30, -30);  // Scaling and inverting Y axis for proper display
+    scale(20, -20);  // Scaling and inverting Y axis for proper display
 
     // Draw current frame
     let i = frameCount % X.length;  // Loop through frames
@@ -39,7 +39,7 @@ function setDefaultValues() {
 }
 
 function generateXValues() {
-    let x_vals = linspace(-1.5, 1.25, 40);
+    let x_vals = linspace(-2, 2, 40);
     X = x_vals.map(x => (x < 0) ? [6, x] : [6 + x, 0]);
 }
 
@@ -48,7 +48,7 @@ function calculateAnglesAndVectors() {
     Y = X.map(v => rotation(v, alpha, sf));
     OA = X.map((v, i) => rotation(v, theta[i], l1 / bar(v)));
     let psi = X.map((v, i) => angle(bar(v), (l2 * Math.sin(gamma) / Math.sin(beta)), bar(OA[i])));
-    AX = X.map((v, i) => rotation(v, psi[i], (l2 * Math.sin(gamma) / Math.sin(beta)) / bar(v)));
+    AX = X.map((v, i) => rotation(v, -psi[i], (l2 * Math.sin(gamma) / Math.sin(beta)) / bar(v)));
     AC = AX.map(v => rotation(v, alpha, l2 / bar(v)));
     OC = OA.map((v, i) => [v[0] + AC[i][0], v[1] + AC[i][1]]);
     BC = OA.slice();
@@ -106,10 +106,11 @@ function plotter(X, OA, OB, OC, AX, BY, AC, BC, Y) {
     stroke(0);
     strokeWeight(0.05);
 
-    // Draw blue dashed lines (X and Y paths)
+    drawingContext.setLineDash([.5, .5])
     stroke('blue');
     line(0, 0, X[0], X[1]);
     line(0, 0, Y[0], Y[1]);
+    drawingContext.setLineDash([])
 
     // Draw red parts
     stroke('red');
