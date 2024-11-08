@@ -1,77 +1,136 @@
 let alpha, beta, gamma, sf, l1, l2;
 let X = [];
 let OA = [], OB = [], OC = [], AX = [], BY = [], AC = [], BC = [], Y = [];
-let isPaused = false;  // To track the paused state
+let scaler = 20;
+let drawing = false;
+let linePoints = [];
+let yPathPoints = []; // Array to store the path traced by Y
+const BREAK_POINT = null;
 
 function setup() {
     createCanvas(600, 600);
-    frameRate(10);  // Set to slower to simulate the frames
-    noLoop();  // Start with the loop off
 
-    // Initialize parameters with default values
     setDefaultValues();
 
-    // Generate X values similar to the Python version
     generateXValues();
     calculateAnglesAndVectors();
 
-    // Start drawing the animation
-    loop();
+    document.getElementById('updateBtn').addEventListener('click', () => {
+        updateValues();
+    });
+
+    document.getElementById('playPauseBtn').addEventListener('click', () => {
+        isPaused = !isPaused;
+        document.getElementById('playPauseBtn').textContent = isPaused ? "Play" : "Pause";
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        linePoints = []; // Clear all drawn lines
+        yPathPoints = []; // Clear Y’s path as well
+    });
 }
 
 function draw() {
     background(255);
     translate(width / 2, height / 2);
-    scale(20, -20);  // Scaling and inverting Y axis for proper display
+    scale(scaler, -scaler);
 
-    // Draw current frame
-    let i = frameCount % X.length;  // Loop through frames
-    plotter(X[i], OA[i], OB[i], OC[i], AX[i], BY[i], AC[i], BC[i], Y[i]);
+    generateXValues();
+    calculateAnglesAndVectors();
+
+    plotter(X, OA, OB, OC, AX, BY, AC, BC, Y);
+
+    // Draw the traced path of X
+    drawPath(linePoints, color('black'));
+
+    // Draw the traced path of Y
+    drawPath(yPathPoints, color('blue'));
 }
 
-function setDefaultValues() {
-    alpha = radians(parseFloat(document.getElementById('alpha').value)) || radians(180);
-    beta = radians(parseFloat(document.getElementById('beta').value)) || radians(53.13);
-    gamma = Math.PI - beta - alpha;
-    sf = parseFloat(document.getElementById('sf').value) || 1.4;
-    l1 = parseFloat(document.getElementById('l1').value) || 5;
-    l2 = parseFloat(document.getElementById('l2').value) || 3.5;
+// Function to draw a path with an optional offset
+function drawPath(points, strokeColor) {
+    stroke(strokeColor);
+    strokeWeight(0.1);
+    noFill();
+
+    beginShape();
+    for (let pt of points) {
+        if (pt === BREAK_POINT) {
+            endShape();
+            beginShape();
+        } else {
+            vertex(pt.x, pt.y);
+        }
+    }
+    endShape();
+}
+
+function mousePressed() {
+    if (mouseButton === LEFT) {
+        drawing = true;
+        linePoints.push(BREAK_POINT); // Add a break to start a new line segment for X
+        yPathPoints.push(BREAK_POINT); // Also start a new segment for Y
+    }
+}
+
+function mouseReleased() {
+    if (mouseButton === LEFT) {
+        drawing = false;
+    }
 }
 
 function generateXValues() {
-    let x_vals = linspace(-2, 2, 40);
-    X = x_vals.map(x => (x < 0) ? [6, x] : [6 + x, 0]);
+    let k = height / scaler;
+    let x_val = (mouseX / height - 0.5) * k;
+    let y_val = (0.5 - mouseY / width) * k;
+    X = [x_val, y_val];
+
+    if (drawing) {
+        linePoints.push(createVector(x_val, y_val)); // Store points while drawing for X
+        yPathPoints.push(createVector(OB[0] + BY[0], OB[1] + BY[1])); // Store points while drawing for Y
+    }
 }
 
+// Updated calculateAnglesAndVectors to compute Y correctly
 function calculateAnglesAndVectors() {
-    let theta = X.map(v => angle(l1, bar(v), l2 / (Math.sin(beta) / Math.sin(gamma))));
-    Y = X.map(v => rotation(v, alpha, sf));
-    OA = X.map((v, i) => rotation(v, theta[i], l1 / bar(v)));
-    let psi = X.map((v, i) => angle(bar(v), (l2 * Math.sin(gamma) / Math.sin(beta)), bar(OA[i])));
-    AX = X.map((v, i) => rotation(v, -psi[i], (l2 * Math.sin(gamma) / Math.sin(beta)) / bar(v)));
-    AC = AX.map(v => rotation(v, alpha, l2 / bar(v)));
-    OC = OA.map((v, i) => [v[0] + AC[i][0], v[1] + AC[i][1]]);
+    let v = X; // Assuming X is [x_val, y_val]
+
+    let theta = angle(l1, bar(v), l2 / (Math.sin(beta) / Math.sin(gamma)));
+
+    // Calculate Y based on the rotation of vector v by alpha
+    Y = rotation(v, alpha, sf);
+
+    OA = rotation(v, theta, l1 / bar(v));
+    let psi = angle(bar(v), (l2 * Math.sin(gamma) / Math.sin(beta)), bar(OA));
+    
+    AX = rotation(v, -psi, (l2 * Math.sin(gamma) / Math.sin(beta)) / bar(v));
+    AC = rotation(AX, alpha, l2 / bar(v));
+    OC = [OA[0] + AC[0], OA[1] + AC[1]];
     BC = OA.slice();
     OB = AC.slice();
-    BY = OA.map(v => rotation(v, alpha, 1 / (Math.sin(gamma) / Math.sin(beta))));
+    BY = rotation(OA, alpha, 1 / (Math.sin(gamma) / Math.sin(beta)));
 }
 
-// Update Button Functionality
-document.getElementById('updateBtn').addEventListener('click', () => {
-    setDefaultValues();  // Update parameters based on input fields
-    calculateAnglesAndVectors();  // Recalculate angles and vectors after updating parameters
-});
+// Rest of your helper functions (rotation, angle, bar, etc.) stay the same
 
-// Play/Pause functionality
-document.getElementById('playPauseBtn').addEventListener('click', () => {
-    isPaused = !isPaused;
-    document.getElementById('playPauseBtn').textContent = isPaused ? 'Play' : 'Pause';
-    if (!isPaused) {
-        loop();  // Resume the animation
-    } else {
-        noLoop();  // Pause the animation
-    }
-});
+
+
+// Set default parameter values
+function setDefaultValues() {
+    alpha = radians(parseFloat(document.getElementById('alpha').value));
+    beta = radians(parseFloat(document.getElementById('beta').value));
+    sf = parseFloat(document.getElementById('sf').value);
+    l1 = parseFloat(document.getElementById('l1').value);
+    l2 = parseFloat(document.getElementById('l2').value);
+    gamma = Math.PI - beta - alpha;
+}
+
+// Update values based on the HTML inputs
+function updateValues() {
+    setDefaultValues();  // Re-fetch values from inputs
+    calculateAnglesAndVectors(); // Recalculate geometry
+}
+
 
 // Helper functions
 function radians(deg) {
@@ -93,15 +152,6 @@ function bar(V) {
     return Math.sqrt(V[0] ** 2 + V[1] ** 2);
 }
 
-function linspace(start, end, n) {
-    let arr = [];
-    let step = (end - start) / (n - 1);
-    for (let i = 0; i < n; i++) {
-        arr.push(start + step * i);
-    }
-    return arr;
-}
-
 function plotter(X, OA, OB, OC, AX, BY, AC, BC, Y) {
     stroke(0);
     strokeWeight(0.05);
@@ -109,7 +159,7 @@ function plotter(X, OA, OB, OC, AX, BY, AC, BC, Y) {
     drawingContext.setLineDash([.5, .5])
     stroke('blue');
     line(0, 0, X[0], X[1]);
-    line(0, 0, Y[0], Y[1]);
+    line(0, 0, OB[0] + BY[0], OB[1] + BY[1]);
     drawingContext.setLineDash([])
 
     // Draw red parts
@@ -117,14 +167,12 @@ function plotter(X, OA, OB, OC, AX, BY, AC, BC, Y) {
     line(0, 0, OA[0], OA[1]);
     line(OA[0], OA[1], OA[0] + AX[0], OA[1] + AX[1]);
     line(OA[0], OA[1], OA[0] + AC[0], OA[1] + AC[1]);
-    line(OC[0], OC[1], X[0], X[1]);
+    line(OC[0], OC[1], OA[0] + AX[0], OA[1] + AX[1]);
 
     // Draw green parts
     stroke('green');
     line(0, 0, OB[0], OB[1]);
     line(OB[0], OB[1], OB[0] + BY[0], OB[1] + BY[1]);
     line(OB[0], OB[1], OC[0], OC[1]);
-    line(OC[0], OC[1], Y[0], Y[1]);
-
-    // Add labels and visual aids as needed
+    line(OC[0], OC[1], OB[0] + BY[0], OB[1] + BY[1]);
 }

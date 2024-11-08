@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mechanism Simulation</title>
+    <title>Mechanism Simulation - Retro Style</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <style>
+        /* Late 2000s style gray gradient background */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Verdana', sans-serif;
+            background: linear-gradient(to bottom, #e0e0e0 0%, #c0c0c0 100%);
             color: #333;
             margin: 0;
             padding: 20px;
@@ -16,19 +17,37 @@
             flex-direction: column;
             align-items: center;
         }
+
+        /* Header styling */
         h1 {
             color: #2c3e50;
+            font-size: 24px;
+            background-color: #d0d0d0;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
+
+        /* Input group styling */
         .input-group {
             margin: 10px 0;
             display: flex;
             flex-direction: column;
             width: 250px;
+            background: linear-gradient(to bottom, #c8c8c8, #e2e2e2);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
         }
+
         label {
             margin-bottom: 5px;
             font-weight: bold;
+            color: #333;
         }
+
         input[type="number"] {
             padding: 8px;
             border: 1px solid #ccc;
@@ -36,7 +55,11 @@
             font-size: 14px;
             width: 100%;
             box-sizing: border-box;
+            background-color: #f9f9f9;
+            margin-bottom: 5px;
         }
+
+        /* Button styling */
         button {
             margin-top: 10px;
             padding: 10px;
@@ -46,13 +69,22 @@
             color: white;
             font-size: 14px;
             cursor: pointer;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s;
         }
+
         button:hover {
             background-color: #2980b9;
         }
+
+        /* Controls section styling */
         #controls {
             margin-bottom: 20px;
+            width: 280px;
+            background: #d0d0d0;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -86,6 +118,8 @@
 
         <button id="updateBtn">Update</button>
         <button id="playPauseBtn">Pause</button>
+        <button id="resetBtn">Reset Marks</button>
+
     </div>
     <script src="app.js"></script>
 </body>
