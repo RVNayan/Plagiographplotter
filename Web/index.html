@@ -3,124 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mechanism Simulation - Retro Style</title>
+    <title>Mechanism Simulation</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <style>
-        /* Late 2000s style gray gradient background */
         body {
-            font-family: 'Verdana', sans-serif;
-            background: linear-gradient(to bottom, #e0e0e0 0%, #c0c0c0 100%);
-            color: #333;
+            font-family: Arial, sans-serif;
+            background-color: #1b1b1b;
+            color: #e0e0e0;
             margin: 0;
             padding: 20px;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
         }
 
-        /* Header styling */
+        .container {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 900px;
+        }
+
         h1 {
-            color: #2c3e50;
+            color: #e0e0e0;
             font-size: 24px;
-            background-color: #d0d0d0;
-            padding: 10px;
-            border-radius: 5px;
             text-align: center;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            width: 100%;
         }
 
-        /* Input group styling */
-        .input-group {
-            margin: 10px 0;
+        #controls {
             display: flex;
             flex-direction: column;
-            width: 250px;
-            background: linear-gradient(to bottom, #c8c8c8, #e2e2e2);
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            gap: 15px;
+            padding: 20px;
+            background-color: #2e2e2e;
+            border: 2px solid #444;
+            border-radius: 8px;
+            width: 280px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
 
         label {
-            margin-bottom: 5px;
             font-weight: bold;
-            color: #333;
+            color: #b0b0b0;
         }
 
         input[type="number"] {
             padding: 8px;
-            border: 1px solid #ccc;
+            border: 1px solid #444;
             border-radius: 4px;
             font-size: 14px;
-            width: 100%;
-            box-sizing: border-box;
-            background-color: #f9f9f9;
-            margin-bottom: 5px;
+            background-color: #333;
+            color: #e0e0e0;
         }
 
-        /* Button styling */
         button {
-            margin-top: 10px;
             padding: 10px;
             border: none;
             border-radius: 4px;
-            background-color: #3498db;
+            background-color: #3a82f7;
             color: white;
             font-size: 14px;
             cursor: pointer;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
         }
 
         button:hover {
-            background-color: #2980b9;
+            background-color: #3366cc;
         }
 
-        /* Controls section styling */
-        #controls {
-            margin-bottom: 20px;
-            width: 280px;
-            background: #d0d0d0;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        #resetBtn {
+            background-color: #e74c3c;
+        }
+
+        #resetBtn:hover {
+            background-color: #c0392b;
+        }
+
+        .canvas-container {
+            background-color: #2e2e2e;
+            border: 2px solid #444;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
 <body>
-    <h1>Mechanism Simulation</h1>
-    <div id="controls">
-        <div class="input-group">
-            <label for="alpha">Alpha (degrees):</label>
-            <input type="number" id="alpha" value="90" />
+    <div class="container">
+        <div id="controls">
+            <h1>Mechanism Simulation</h1>
+            <div class="input-group">
+                <label for="alpha">Alpha (degrees):</label>
+                <input type="number" id="alpha" value="90" />
+            </div>
+            <div class="input-group">
+                <label for="beta">Beta (degrees):</label>
+                <input type="number" id="beta" value="54.46" />
+            </div>
+            <div class="input-group">
+                <label for="sf">Scale Factor:</label>
+                <input type="number" id="sf" value="1.4" />
+            </div>
+            <div class="input-group">
+                <label for="l1">Length l1:</label>
+                <input type="number" id="l1" value="5" />
+            </div>
+            <div class="input-group">
+                <label for="l2">Length l2:</label>
+                <input type="number" id="l2" value="3.5" />
+            </div>
+            <button id="updateBtn">Update</button>
+            <button id="playPauseBtn">Pause</button>
+            <button id="resetBtn">Reset Marks</button>
         </div>
 
-        <div class="input-group">
-            <label for="beta">Beta (degrees):</label>
-            <input type="number" id="beta" value="54.46" /> <!-- approx value for atan(1.4) in degrees -->
+        <div class="canvas-container">
+            <!-- p5.js canvas will be placed here -->
         </div>
-
-        <div class="input-group">
-            <label for="sf">Scale Factor:</label>
-            <input type="number" id="sf" value="1.4" />
-        </div>
-
-        <div class="input-group">
-            <label for="l1">Length l1:</label>
-            <input type="number" id="l1" value="5" />
-        </div>
-
-        <div class="input-group">
-            <label for="l2">Length l2:</label>
-            <input type="number" id="l2" value="3.5" />
-        </div>
-
-        <button id="updateBtn">Update</button>
-        <button id="playPauseBtn">Pause</button>
-        <button id="resetBtn">Reset Marks</button>
-
     </div>
+
+    <!-- External JS file -->
     <script src="app.js"></script>
 </body>
 </html>

@@ -28,6 +28,17 @@ function setup() {
         linePoints = []; // Clear all drawn lines
         yPathPoints = []; // Clear Y’s path as well
     });
+
+    const existingCanvas = select('canvas');
+    if (existingCanvas) {
+        existingCanvas.remove();
+    }
+
+    // Now create a new canvas and attach it to the .canvas-container
+    canvas = createCanvas(600, 600);
+    canvas.parent(document.querySelector('.canvas-container'));  // Attach to the canvas container
+
+    background(200);
 }
 
 function draw() {
@@ -102,7 +113,7 @@ function calculateAnglesAndVectors() {
 
     OA = rotation(v, theta, l1 / bar(v));
     let psi = angle(bar(v), (l2 * Math.sin(gamma) / Math.sin(beta)), bar(OA));
-    
+
     AX = rotation(v, -psi, (l2 * Math.sin(gamma) / Math.sin(beta)) / bar(v));
     AC = rotation(AX, alpha, l2 / bar(v));
     OC = [OA[0] + AC[0], OA[1] + AC[1]];
