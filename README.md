@@ -12,7 +12,7 @@ The Python code uses basic geometric formulas to map the positions of all the jo
   <img src="./Img/browser.png" alt="Image" width="900"/>
 </div>
 
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+<div style="display: flex; justify-content: center;">
   <img src="./Img/motion.gif" alt="Image" width="300"/>
   <div>
     <p>Please install the following Python libraries in your system (You can Also try the Online Version without installing these)</p>
