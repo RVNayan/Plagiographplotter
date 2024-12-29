@@ -19,15 +19,15 @@ function setup() {
         updateValues();
     });
 
-    document.getElementById('playPauseBtn').addEventListener('click', () => {
-        isPaused = !isPaused;
-        document.getElementById('playPauseBtn').textContent = isPaused ? "Play" : "Pause";
-    });
-
     document.getElementById('resetBtn').addEventListener('click', () => {
         linePoints = []; // Clear all drawn lines
         yPathPoints = []; // Clear Y’s path as well
     });
+
+    document.getElementById('Hidetext').addEventListener('click', () => {
+        showSigns = !showSigns;  // Toggle the value of showSigns
+    });
+    
 
     const existingCanvas = select('canvas');
     if (existingCanvas) {
@@ -84,11 +84,6 @@ function drawLabels() {
 
 }
 
-// Add a button or control to toggle showSigns value
-document.getElementById('toggleSignsBtn').addEventListener('click', () => {
-    showSigns = !showSigns;  // Toggle the value of showSigns
-    document.getElementById('toggleSignsBtn').textContent = showSigns ? "Hide Signs" : "Show Signs";
-});
 
 // Function to draw a path with an optional offset
 function drawPath(points, strokeColor) {
