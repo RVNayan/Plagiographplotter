@@ -41,6 +41,8 @@ function setup() {
     background(200);
 }
 
+let showSigns = true;  // Set to true to show nomenclature, false to hide it
+
 function draw() {
     background(255);
     translate(width / 2, height / 2);
@@ -52,11 +54,41 @@ function draw() {
     plotter(X, OA, OB, OC, AX, BY, AC, BC, Y);
 
     // Draw the traced path of X
-    drawPath(linePoints, color('black'));
+    drawPath(linePoints, color('lightblue'));
 
     // Draw the traced path of Y
-    drawPath(yPathPoints, color('blue'));
+    drawPath(yPathPoints, color('black'));
+
+    // Draw labels if showSigns is true
+    if (showSigns) {
+        drawLabels();
+    }
 }
+
+// Function to draw the labels for nodes and angles
+function drawLabels() {
+    // Labels for nodes A, B, C, X, Y
+    fill(0);
+    textSize(0.8);
+    textAlign(BOTTOM, BOTTOM);
+
+    // X, Y labels
+    text("X", X[0], X[1]);
+    text("0", 0,0);
+    text("Y", OB[0] + BY[0], OB[1] + BY[1]);
+
+    // OA, OB, and OC positions for A, B, C
+    text("A", OA[0], OA[1]);
+    text("B", OB[0], OB[1]);
+    text("C", OC[0], OC[1]);
+
+}
+
+// Add a button or control to toggle showSigns value
+document.getElementById('toggleSignsBtn').addEventListener('click', () => {
+    showSigns = !showSigns;  // Toggle the value of showSigns
+    document.getElementById('toggleSignsBtn').textContent = showSigns ? "Hide Signs" : "Show Signs";
+});
 
 // Function to draw a path with an optional offset
 function drawPath(points, strokeColor) {
@@ -91,14 +123,17 @@ function mouseReleased() {
 }
 
 function generateXValues() {
-    let k = height / scaler;
-    let x_val = (mouseX / height - 0.5) * k;
-    let y_val = (0.5 - mouseY / width) * k;
-    X = [x_val, y_val];
+    // Check if the mouse is inside the canvas
+    if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
+        let k = height / scaler;
+        let x_val = (mouseX / height - 0.5) * k;
+        let y_val = (0.5 - mouseY / width) * k;
+        X = [x_val, y_val];
 
-    if (drawing) {
-        linePoints.push(createVector(x_val, y_val)); // Store points while drawing for X
-        yPathPoints.push(createVector(OB[0] + BY[0], OB[1] + BY[1])); // Store points while drawing for Y
+        if (drawing) {
+            linePoints.push(createVector(x_val, y_val)); // Store points while drawing for X
+            yPathPoints.push(createVector(OB[0] + BY[0], OB[1] + BY[1])); // Store points while drawing for Y
+        }
     }
 }
 
@@ -110,16 +145,20 @@ function calculateAnglesAndVectors() {
 
     // Calculate Y based on the rotation of vector v by alpha
     Y = rotation(v, alpha, sf);
-
-    OA = rotation(v, theta, l1 / bar(v));
     let psi = angle(bar(v), (l2 * Math.sin(gamma) / Math.sin(beta)), bar(OA));
 
-    AX = rotation(v, -psi, (l2 * Math.sin(gamma) / Math.sin(beta)) / bar(v));
-    AC = rotation(AX, alpha, l2 / bar(v));
-    OC = [OA[0] + AC[0], OA[1] + AC[1]];
-    BC = OA.slice();
-    OB = AC.slice();
-    BY = rotation(OA, alpha, 1 / (Math.sin(gamma) / Math.sin(beta)));
+    OA = rotation(v, theta, l1 / bar(v));   // Constant
+    AX = rotation(v, -psi, (l2 * Math.sin(gamma) / Math.sin(beta)) / bar(v));   // Constant
+    BC = OA.slice(); // constant
+    BY = rotation(OA, alpha, 1 / (Math.sin(gamma) / Math.sin(beta))); // constant
+
+    AC = rotation(AX, alpha, sf); // changed to sf to keep the edges constant, change to l2 / bar(v) to make it dynamic
+
+    OC = [OA[0] + AC[0], OA[1] + AC[1]];    // Constant
+    OB = AC.slice(); // Constant
+    
+    T = X;
+    console.log(T[0]**2 + T[1]**2);
 }
 
 // Rest of your helper functions (rotation, angle, bar, etc.) stay the same
