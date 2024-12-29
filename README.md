@@ -9,15 +9,23 @@ A Plagiograph (pla·gi·o·graph) is mechanism for tracing images and scaling th
 The Python code uses basic geometric formulas to map the positions of all the joints. The unique motion of each and every component is captured with precision. You can check out the test run below.
 
 <div style="display: flex; justify-content: center;">
-  <img src="./test.gif" alt="Image" width="300"/>
+  <img src="./Img/browser.png" alt="Image" width="900"/>
 </div>
 
-Please install the following python libaries in you System
-1. Pandas
-2. Numpy
-3. matplotlib
-4. OpenCV
-5. os
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+  <img src="./Img/motion.gif" alt="Image" width="300"/>
+  <div>
+    <p>Please install the following Python libraries in your system (You can Also try the Online Version without installing these)</p>
+    <ul>
+      <li>Pandas</li>
+      <li>Numpy</li>
+      <li>matplotlib</li>
+      <li>OpenCV</li>
+      <li>os</li>
+    </ul>
+  </div>
+</div>
+
 
 
 pip install opencv-python-headless (for python)

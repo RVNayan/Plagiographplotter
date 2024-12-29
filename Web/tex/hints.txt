@@ -1,0 +1,5 @@
+Hint: Start Drawing on the Canvas by Holding the left Mouse button!
+Hint: Click on the Reset button to reset the marks.
+Hint: Adjust the Alpha and Beta values to change the angles.
+Hint: Use the 'Hide Text' button to hide or show labels.
+Trivia: The Above mechanism is called 'Plagiograph'

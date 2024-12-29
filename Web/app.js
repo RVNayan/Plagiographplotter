@@ -7,6 +7,39 @@ let linePoints = [];
 let yPathPoints = []; // Array to store the path traced by Y
 const BREAK_POINT = null;
 
+
+let hints = [];
+let hintIndex = 0;
+
+////////////// Handling Hints
+function preload() {
+    // Load the hints.txt file
+    loadStrings('tex/hints.txt', (data) => {
+        hints = data;  // Store the lines from the text file
+        updateHint();
+    });
+}
+
+
+function displayHint() {
+    // Display the current hint at the bottom of the canvas
+    fill(255);
+    rect(0, height - 40, width, 40);  // Background for the hint
+    fill(0);
+    textSize(14);
+    textAlign(CENTER, CENTER);
+    text(hints[hintIndex], width / 2, height - 20);
+}
+function updateHint() {
+    // Generate a random index to pick a hint
+    const randomIndex = Math.floor(Math.random() * hints.length);
+    
+    // Update the hint text in the container
+    const hintContainer = document.getElementById('hint-container');
+    hintContainer.innerText = hints[randomIndex];
+}
+
+
 function setup() {
     createCanvas(600, 600);
 
@@ -58,7 +91,7 @@ function draw() {
 
     // Draw the traced path of Y
     drawPath(yPathPoints, color('black'));
-
+    displayHint();
     // Draw labels if showSigns is true
     if (showSigns) {
         drawLabels();
@@ -152,8 +185,8 @@ function calculateAnglesAndVectors() {
     OC = [OA[0] + AC[0], OA[1] + AC[1]];    // Constant
     OB = AC.slice(); // Constant
     
-    T = X;
-    console.log(T[0]**2 + T[1]**2);
+    // T = X;
+    // console.log(T[0]**2 + T[1]**2);
 }
 
 // Rest of your helper functions (rotation, angle, bar, etc.) stay the same
