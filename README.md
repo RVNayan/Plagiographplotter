@@ -4,7 +4,7 @@ A Plagiograph (pla·gi·o·graph) is mechanism for tracing images and scaling th
 
 Click [here](https://plagioplotter.netlify.app/) to Try it Online!
 
-Click [here](https://github.com/RVNayan/Plagiographplotter/blob/main/Reportv3.pdf) to view the Term Paper on the Simulation 
+Click [here](https://github.com/RVNayan/Plagiographplotter/blob/main/Reportv3.pdf) to view the Term Paper on the Simulation (Disable any AD Blocker)
 
 The Python code uses basic geometric formulas to map the positions of all the joints. The unique motion of each and every component is captured with precision. You can check out the test run below.
 
