@@ -11,7 +11,7 @@ let hints = [];
 let hintIndex = 0;
 let showSigns = true; // Toggle for labels
 
-const MAX_POINTS = 300; 
+const MAX_POINTS = 500; 
 
 ////////////// Handling Hints
 function preload() {
@@ -51,7 +51,7 @@ function setup() {
     createCanvas(newWidth, newHeight);
     
     setDefaultValues();
-    frameRate(30);
+    frameRate(60);
     generateXValues();
     calculateAnglesAndVectors();
 
