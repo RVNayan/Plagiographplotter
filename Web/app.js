@@ -35,7 +35,7 @@ function updateHint() {
 }
 
 function setup() {
-    createCanvas(windowWidth * 0.9, windowHeight * 0.7);
+    createCanvas(600, 600);
 
     setDefaultValues();
 
@@ -64,14 +64,9 @@ function setup() {
         existingCanvas.remove();
     }
 
-    canvas = createCanvas(windowWidth * 0.9, windowHeight * 0.7);
+    canvas = createCanvas(600, 600);
     canvas.parent(document.querySelector('.canvas-container')); 
     background(200);
-}
-
-function windowResized() {
-    resizeCanvas(windowWidth * 0.9, windowHeight * 0.7);
-    scaler = Math.min(windowWidth, windowHeight) / 60;
 }
 
 function draw() {
@@ -82,15 +77,17 @@ function draw() {
     generateXValues();
     calculateAnglesAndVectors();
 
-    if (showUserCurves) {
+    if(showUserCurves) {
         plotter(X, OA, OB, OC, AX, BY, AC, BC, Y);
     }
-
+    // Draw the traced path of X
     if (showUserCurves) {
         drawPath(linePoints, color('lightblue'));
     }
 
+    
     drawPath(yPathPoints, color('black'));
+    
 
     displayHint();
 
@@ -141,20 +138,6 @@ function mouseReleased() {
     if (mouseButton === LEFT) {
         drawing = false;
     }
-}
-
-function touchStarted() {
-    if (!mouseIsPressed) {
-        drawing = true;
-        linePoints.push(BREAK_POINT);
-        yPathPoints.push(BREAK_POINT);
-    }
-    return false; // Prevent default behavior
-}
-
-function touchEnded() {
-    drawing = false;
-    return false; // Prevent default behavior
 }
 
 function generateXValues() {
