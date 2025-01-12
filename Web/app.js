@@ -4,14 +4,16 @@ let OA = [], OB = [], OC = [], AX = [], BY = [], AC = [], BC = [], Y = [];
 let scaler = 20;
 let drawing = false;
 let linePoints = [];
-let yPathPoints = []; // Array to store the path traced by Y
+let yPathPoints = [];
 const BREAK_POINT = null;
-let showUserCurves = true; // Boolean to toggle visibility of user-drawn curves
+let showUserCurves = true;
 let hints = [];
 let hintIndex = 0;
-let showSigns = true; // Toggle for labels
+let showSigns = true;
 
-////////////// Handling Hints
+// Adjust the number of points stored for paths
+const MAX_POINTS = 500; 
+
 function preload() {
     loadStrings('tex/hints.txt', (data) => {
         hints = data;  
@@ -19,53 +21,24 @@ function preload() {
     });
 }
 
-function displayHint() {
-    fill(255);
-    rect(0, height - 40, width, 40);  // Background for the hint
-    fill(0);
-    textSize(14);
-    textAlign(CENTER, CENTER);
-    text(hints[hintIndex], width / 2, height - 20);
-}
-
-function updateHint() {
-    const randomIndex = Math.floor(Math.random() * hints.length);
-    const hintContainer = document.getElementById('hint-container');
-    hintContainer.innerText = hints[randomIndex];
-}
-
 function setup() {
-    createCanvas(600, 600);
+    // Adjust canvas size for mobile
+    const canvasSize = min(windowWidth * 0.9, windowHeight * 0.7);
+    const canvas = createCanvas(canvasSize, canvasSize);
+    canvas.parent(document.querySelector('.canvas-container'));
 
     setDefaultValues();
 
     generateXValues();
     calculateAnglesAndVectors();
 
-    document.getElementById('updateBtn').addEventListener('click', () => {
-        updateValues();
-    });
+    frameRate(30); // Reduce frame rate for better mobile performance
 
-    document.getElementById('resetBtn').addEventListener('click', () => {
-        linePoints = []; 
-        yPathPoints = [];
-    });
+    document.getElementById('updateBtn').addEventListener('click', updateValues);
+    document.getElementById('resetBtn').addEventListener('click', resetCanvas);
+    document.getElementById('Hidetext').addEventListener('click', () => showSigns = !showSigns);
+    document.getElementById('Dwgtoggle').addEventListener('click', () => showUserCurves = !showUserCurves);
 
-    document.getElementById('Hidetext').addEventListener('click', () => {
-        showSigns = !showSigns;
-    });
-
-    document.getElementById('Dwgtoggle').addEventListener('click', () => {
-        showUserCurves = !showUserCurves; // Toggle user-drawn curves
-    });
-
-    const existingCanvas = select('canvas');
-    if (existingCanvas) {
-        existingCanvas.remove();
-    }
-
-    canvas = createCanvas(600, 600);
-    canvas.parent(document.querySelector('.canvas-container')); 
     background(200);
 }
 
@@ -77,23 +50,74 @@ function draw() {
     generateXValues();
     calculateAnglesAndVectors();
 
-    if(showUserCurves) {
+    if (showUserCurves) {
         plotter(X, OA, OB, OC, AX, BY, AC, BC, Y);
     }
-    // Draw the traced path of X
+
     if (showUserCurves) {
         drawPath(linePoints, color('lightblue'));
     }
 
-    
     drawPath(yPathPoints, color('black'));
-    
-
-    displayHint();
 
     if (showSigns) {
         drawLabels();
     }
+}
+
+function mousePressed() {
+    if (mouseButton === LEFT) {
+        drawing = true;
+        linePoints.push(BREAK_POINT);
+        yPathPoints.push(BREAK_POINT);
+    }
+}
+
+function mouseReleased() {
+    if (mouseButton === LEFT) {
+        drawing = false;
+    }
+}
+
+function touchStarted() {
+    drawing = true;
+    linePoints.push(BREAK_POINT);
+    yPathPoints.push(BREAK_POINT);
+    return false;
+}
+
+function touchEnded() {
+    drawing = false;
+    return false;
+}
+
+function generateXValues() {
+    if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
+        let k = height / scaler;
+        let x_val = (mouseX / height - 0.5) * k;
+        let y_val = (0.5 - mouseY / width) * k;
+        X = [x_val, y_val];
+
+        if (drawing) {
+            linePoints.push(createVector(x_val, y_val));
+            yPathPoints.push(createVector(OB[0] + BY[0], OB[1] + BY[1]));
+
+            // Limit points stored to optimize performance
+            if (linePoints.length > MAX_POINTS) linePoints.shift();
+            if (yPathPoints.length > MAX_POINTS) yPathPoints.shift();
+        }
+    }
+}
+
+function resetCanvas() {
+    linePoints = [];
+    yPathPoints = [];
+}
+
+function updateHint() {
+    const randomIndex = Math.floor(Math.random() * hints.length);
+    const hintContainer = document.getElementById('hint-container');
+    hintContainer.innerText = hints[randomIndex];
 }
 
 function drawLabels() {
