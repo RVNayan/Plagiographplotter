@@ -4,3 +4,4 @@ Hint: Adjust the Alpha and Beta values to change the angles.
 Hint: Use the 'Hide Text' button to hide or show labels.
 Trivia: The Above mechanism is called 'Plagiograph'
 Hint: Copy your Image by Right Clicking on the Canvas! 
+Hint: Hide mechanism to make the curve disappear

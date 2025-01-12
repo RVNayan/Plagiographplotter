@@ -142,8 +142,7 @@ button:hover {
     text-align: center;
     font-size: 14px;
     animation: zoomInOut 3s ease-in-out infinite; 
-    /* margin-left: 50%; */
-    margin-left: 50%;
+    margin-right: 50%;
 }
 
 #github-repo {
@@ -189,12 +188,11 @@ button:hover {
         font-size: 12px; /* Decrease hint text size for smaller screens */
     }
     .canvas-container {
-        max-width: min-content;
         align-items: center;
     }
     .hint-container {
-        width:10%;
-        align-items: left;
+        width:40%;
+        align-items: center;
 
     }
 }
@@ -265,5 +263,11 @@ button:hover {
       </div>
       
     <script src="app.js"></script>
+    <script>
+        // Add event listener to hide hint when clicked
+        document.getElementById('hint-container').addEventListener('click', function() {
+            this.style.display = 'none';  // Hide the hint container
+        });
+    </script>
 </body>
 </html>

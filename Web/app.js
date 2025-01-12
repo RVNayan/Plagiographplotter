@@ -107,7 +107,7 @@ function draw() {
 
 function drawLabels() {
     fill(0);
-    textSize(0.8);
+    textSize(0.7);
     textAlign(BOTTOM, BOTTOM);
 
     text("X", X[0], X[1]);
