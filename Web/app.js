@@ -11,7 +11,7 @@ let hints = [];
 let hintIndex = 0;
 let showSigns = true; // Toggle for labels
 
-const MAX_POINTS = 0; 
+const MAX_POINTS = 300; 
 
 ////////////// Handling Hints
 function preload() {
