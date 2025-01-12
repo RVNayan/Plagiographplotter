@@ -11,6 +11,8 @@ let hints = [];
 let hintIndex = 0;
 let showSigns = true; // Toggle for labels
 
+const MAX_POINTS = 100; 
+
 ////////////// Handling Hints
 function preload() {
     loadStrings('tex/hints.txt', (data) => {
@@ -153,6 +155,9 @@ function generateXValues() {
         if (drawing) {
             linePoints.push(createVector(x_val, y_val)); 
             yPathPoints.push(createVector(OB[0] + BY[0], OB[1] + BY[1]));
+
+            if (linePoints.length > MAX_POINTS) linePoints.shift();
+            if (yPathPoints.length > MAX_POINTS) yPathPoints.shift();
         }
     }
 }
