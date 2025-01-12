@@ -38,7 +38,7 @@ body {
 
 h1 {
     color: #e0e0e0;
-    font-size: 24px;
+    font-size: 44px;
     text-align: center;
     margin-bottom: 20px;
     width: 100%;
@@ -167,15 +167,15 @@ button:hover {
     .main-content {
         flex-direction: column; /* Stack controls and canvas vertically */
         align-items: center; /* Center content vertically on smaller screens */
+        margin-top: 600px;
     }
 
     #controls {
-        width: 50%; /* Full width for controls */
-        
+        width: 70%; /* Full width for controls */   
     }
 
     h1 {
-        font-size: 20px; /* Slightly reduce heading size */
+        font-size: 25px; /* Slightly reduce heading size */
     }
 
     button {
@@ -196,7 +196,7 @@ button:hover {
 }
 
 /* Responsive Styles for Screens Smaller than 480px */
-@media (max-width: 480px) {
+@media (max-width: 200px) {
     h1 {
         font-size: 18px; /* Further reduce heading size for very small screens */
     }
@@ -211,6 +211,12 @@ button:hover {
 
     #controls {
         width: 90%; /* Controls take up most of the width on small screens */
+    }
+
+    .main-content {
+        flex-direction: column; /* Stack controls and canvas vertically */
+        align-items: center; /* Center content vertically on smaller screens */
+        margin-top: 80%;
     }
 }
     </style>
