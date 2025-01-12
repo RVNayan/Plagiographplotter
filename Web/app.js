@@ -35,7 +35,7 @@ function updateHint() {
 }
 
 function setup() {
-    createCanvas(600, 600);
+    createCanvas(windowWidth * 0.9, windowHeight * 0.7);
 
     setDefaultValues();
 
@@ -64,9 +64,14 @@ function setup() {
         existingCanvas.remove();
     }
 
-    canvas = createCanvas(600, 600);
+    canvas = createCanvas(windowWidth * 0.9, windowHeight * 0.7);
     canvas.parent(document.querySelector('.canvas-container')); 
     background(200);
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth * 0.9, windowHeight * 0.7);
+    scaler = Math.min(windowWidth, windowHeight) / 60;
 }
 
 function draw() {
@@ -77,17 +82,15 @@ function draw() {
     generateXValues();
     calculateAnglesAndVectors();
 
-    if(showUserCurves) {
+    if (showUserCurves) {
         plotter(X, OA, OB, OC, AX, BY, AC, BC, Y);
     }
-    // Draw the traced path of X
+
     if (showUserCurves) {
         drawPath(linePoints, color('lightblue'));
     }
 
-    
     drawPath(yPathPoints, color('black'));
-    
 
     displayHint();
 
@@ -138,6 +141,20 @@ function mouseReleased() {
     if (mouseButton === LEFT) {
         drawing = false;
     }
+}
+
+function touchStarted() {
+    if (!mouseIsPressed) {
+        drawing = true;
+        linePoints.push(BREAK_POINT);
+        yPathPoints.push(BREAK_POINT);
+    }
+    return false; // Prevent default behavior
+}
+
+function touchEnded() {
+    drawing = false;
+    return false; // Prevent default behavior
 }
 
 function generateXValues() {
@@ -224,4 +241,22 @@ function plotter(X, OA, OB, OC, AX, BY, AC, BC, Y) {
     line(OB[0], OB[1], OB[0] + BY[0], OB[1] + BY[1]);
     line(OB[0], OB[1], OC[0], OC[1]);
     line(OC[0], OC[1], OB[0] + BY[0], OB[1] + BY[1]);
+
+    // Shading
+    fill('rgba(20, 74, 221, 0.5)'); // Red with 50% opacity
+    noStroke(); // Disable stroke for the filled shape
+    beginShape();
+    vertex(OB[0], OB[1]);             // B
+    vertex(OC[0], OC[1]);             // C
+    vertex(OB[0] + BY[0], OB[1] + BY[1]); // Y
+    endShape(CLOSE); // Close the shape to form a triangle
+
+    fill('rgba(255, 0, 0, 0.66)'); // Red with 50% opacity
+    noStroke(); // Disable stroke for the filled shape
+    beginShape();
+    vertex(OA[0], OA[1]);             // B
+    vertex(OC[0], OC[1]);             // C
+    vertex(OA[0] + AX[0], OA[1] + AX[1]); // Y
+    endShape(CLOSE); // Close the shape to form a triangle
+
 }

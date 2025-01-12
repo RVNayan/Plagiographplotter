@@ -21,10 +21,18 @@
 
         .container {
             display: flex;
+            flex-direction: column;
             gap: 20px;
-            align-items: flex-start;
+            align-items: center;
             width: 100%;
             max-width: 900px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            width: 100%;
         }
 
         h1 {
@@ -45,6 +53,7 @@
             border-radius: 8px;
             width: 280px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+            margin-bottom: 20px;
         }
 
         .input-group {
@@ -92,6 +101,8 @@
         }
 
         .canvas-container {
+            flex-direction: column;
+            margin-bottom: 20px;
             background-color: #2e2e2e;
             border: 2px solid #444;
             border-radius: 8px;
@@ -129,11 +140,28 @@
             font-size: 14px;
             animation: zoomInOut 3s ease-in-out infinite; /* Apply animation */
         }
+        #github-repo {
+            margin-top: -30px;
+            text-align: center;
+            font-size: 16px;
+            color: greenyellow;
+        }
+
+        #github-repo a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #github-repo a:hover {
+            text-decoration: underline;
+        }
 
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="main-content">
         <div id="controls">
             <h1>Mechanism Simulation</h1>
             <div class="input-group">
@@ -141,7 +169,7 @@
                 <input type="number" id="alpha" value="90" />
             </div>
             <div class="input-group">
-                <label for="beta">Beta (degrees) - ∠AXC</label>
+                <label for="beta">Beta (degrees) - ∠AXC:</label>
                 <input type="number" id="beta" value="54.46" />
             </div>
             <div class="input-group">
@@ -149,11 +177,11 @@
                 <input type="number" id="sf" value="1.4" />
             </div>
             <div class="input-group">
-                <label for="l1">Length l1 - OA</label>
+                <label for="l1">Length l1 - OA:</label>
                 <input type="number" id="l1" value="5" />
             </div>
             <div class="input-group">
-                <label for="l2">Length l2 - OB</label>
+                <label for="l2">Length l2 - OB:</label>
                 <input type="number" id="l2" value="3.5" />
             </div>
             <button id="updateBtn">Update Dimensions</button>
@@ -161,12 +189,17 @@
             <button id="Dwgtoggle">Hide Mechanism</button>
             <button id="resetBtn">Clear Canvas</button>
         </div>
-
+    
         <div class="canvas-container">
             <!-- p5.js canvas will be placed here -->
         </div>
+        </div>
+        <div id="github-repo">
+            <a href="https://github.com/RVNayan/Plagiographplotter.git" target="_blank">GitHub Repo</a> Do Add a star! ⭐
+        </div>
     </div>
-
+    
+    
     <div id="hint-container">
         <span id="hint-text">Start Drawing on the Canvas by Holding the left Mouse button</span>
       </div>
