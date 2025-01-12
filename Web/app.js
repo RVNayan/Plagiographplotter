@@ -37,8 +37,16 @@ function updateHint() {
 }
 
 function setup() {
-    createCanvas(600, 600);
+    // Get the container size
+    let canvasWidth = document.querySelector('.canvas-container').clientWidth;
+    let canvasHeight = document.querySelector('.canvas-container').clientHeight;
+    let offset = 60;
+    // Set the canvas size with an upper limit of 600x600
+    let newWidth = Math.min(canvasWidth + offset, 600);  // Set max width to 600
+    let newHeight = Math.min(canvasHeight + offset, 600);  // Set max height to 600
 
+    createCanvas(newWidth, newHeight);
+    
     setDefaultValues();
     frameRate(30);
     generateXValues();
@@ -73,7 +81,7 @@ function setup() {
         existingCanvas.remove();
     }
 
-    canvas = createCanvas(600, 600);
+    canvas = createCanvas(newWidth, newHeight);
     canvas.parent(document.querySelector('.canvas-container')); 
     background(200);
 }
