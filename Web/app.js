@@ -11,7 +11,7 @@ let hints = [];
 let hintIndex = 0;
 let showSigns = true; // Toggle for labels
 
-const MAX_POINTS = 100; 
+const MAX_POINTS = 0; 
 
 ////////////// Handling Hints
 function preload() {
@@ -62,7 +62,11 @@ function setup() {
         showUserCurves = !showUserCurves;
         this.innerText = showUserCurves ? "Hide Mechanism" : "Show Mechanism"; // Toggle text
     });
-    
+    // Prevent page scrolling when interacting with the canvas
+    document.querySelector('.canvas-container').addEventListener('touchstart', function(e) {
+        e.preventDefault();
+    }, { passive: false });
+
 
     const existingCanvas = select('canvas');
     if (existingCanvas) {
